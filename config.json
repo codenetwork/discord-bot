@@ -1,8 +1,11 @@
 {
   "token": "MY_BOT_TOKEN_HERE",
   "bot": {
+    "commands_prefix": "!",
+    "commands_require_mention": false,
     "plugins": [
-      "plugins.test"
+      "plugins.test",
+      "plugins.role.roles"
     ]
   }
 }
