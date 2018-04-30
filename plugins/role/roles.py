@@ -61,9 +61,16 @@ class RolePlugin(Plugin):
         if role is None:
             event.msg.reply('Unknown role!')
             return
-        event.member.add_role(
-            self.get_discord_role_by_name(event.guild, role.role_name)
+        discord_role = self.get_discord_role_by_name(
+            event.guild, role.role_name
         )
+        if discord_role is None:
+            event.msg.reply('Missing role definition!')
+            return
+        if discord_role.id in event.member.roles:
+            event.msg.reply('You already have this role!')
+            return
+        event.member.add_role(discord_role)
         event.msg.reply('You\'ve been given the {} role!'.format(role.role_name))
 
     @Plugin.command('take', '<role_name:str>', group='role')
@@ -72,9 +79,16 @@ class RolePlugin(Plugin):
         if role is None:
             event.msg.reply('Unknown role!')
             return
-        event.member.remove_role(
-            self.get_discord_role_by_name(event.guild, role.role_name)
+        discord_role = self.get_discord_role_by_name(
+            event.guild, role.role_name
         )
+        if discord_role is None:
+            event.msg.reply('Missing role definition!')
+            return
+        if discord_role.id not in event.member.roles:
+            event.msg.reply('You don\'t have this role!')
+            return
+        event.member.remove_role(discord_role)
         event.msg.reply('You\'ve lost the {} role!'.format(role.role_name))
 
     @Plugin.command('list', group='role')
