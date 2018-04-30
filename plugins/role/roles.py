@@ -25,7 +25,7 @@ class RolePlugin(Plugin):
         with open(get_file_path('roles.json'), 'w+') as f:
             f.write(jsonpickle.encode(self.roles, keys=True))
 
-    def get_by_alias(self, alias: str, ignore_restricted: bool=True) -> Optional[Role]:
+    def get_by_alias(self, alias: str, ignore_restricted: bool = True) -> Optional[Role]:
         for role in self.roles:
             if ignore_restricted and role.restricted:
                 continue
@@ -103,4 +103,5 @@ class RolePlugin(Plugin):
                 role_description += '* Role `{}` with aliases: `{}`\n'.format(
                     role.role_name, ', '.join(role.aliases)
                 )
+        role_description += '\n\nTo give yourself a new role use `!role give <group alias>`'
         event.msg.reply(role_description)
