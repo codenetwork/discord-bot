@@ -5,7 +5,9 @@
     "commands_require_mention": false,
     "plugins": [
       "plugins.test",
-      "plugins.role.roles"
+      "plugins.role.roles",
+      "plugins.parking.parking",
+      "plugins.bot.bot"
     ]
   }
 }
