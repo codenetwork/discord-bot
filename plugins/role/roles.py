@@ -6,8 +6,8 @@ import jsonpickle
 from disco.bot import Plugin
 from disco.bot.command import CommandEvent
 
-from plugins.util import permission_util
 from plugins.util.config_util import get_file_path
+from plugins.util.permission_util import admin_only
 
 from .role import Role
 
@@ -41,12 +41,10 @@ class RolePlugin(Plugin):
         return None
 
     @Plugin.command('add', '<role_name:str> <role_alias:str>', group='role')
+    @admin_only()
     def command_role_add(
             self, event: CommandEvent, role_name: str, role_alias: str
     ):
-        if not permission_util.is_admin(event.guild, event.member):
-            event.msg.reply('Insufficient Permissions')
-            return
         if role_name in self.roles:
             event.msg.reply('That role already exists!')
             return
