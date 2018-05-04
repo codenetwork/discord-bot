@@ -26,13 +26,15 @@ class Bot(Plugin):
     def command_test(self, event: CommandEvent):
         event.msg.reply('Beep Boop. The bot 🤖 is responsive.')
 
+    @Plugin.command('invite')
+    def command_test(self, event: CommandEvent):
+        event.msg.reply('Beep Boop. 🤖 here is your invite link: https://codenetwork.co/discord')
+
     @Plugin.command('welcome')
     def welcome(self, event: CommandEvent):
         event.msg.reply('In case you missed it, here is some welcome info.', embed=self.get_welcome_embed())
 
     @Plugin.listen('GuildMemberAdd')
     def send_welcome_pm(self, event):
-        print("sent pm to new user")
-        event.member.user.open_dm().send_message('Hi there! Welcome to our friendly community.')
-        event.member.user.open_dm().send_message('To get started, read through all the info in the <#413628419226468352> channel and everything below. If you have any questions, ask in <#349872637645684737>.',
+        event.member.user.open_dm().send_message('Hi there! Welcome to our friendly community. To get started, read through all the info in the <#413628419226468352> channel and everything below. If you have any questions, ask in <#349872637645684737>.',
                                                  embed=self.get_welcome_embed())
