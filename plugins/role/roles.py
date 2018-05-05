@@ -93,12 +93,18 @@ class RolePlugin(Plugin):
             event.guild, role.role_name
         )
         if discord_role is None:
-            event.msg.reply('Missing role definition!')
+            event.msg.reply('Missing discord role!')
             return
         if role.parent is not None:
             if not has_discord_role(event.member, self.get_discord_role_by_name(event.guild, role.parent)):
-                event.msg.reply('You aren\'t in the parent role `{}`!'.format(role.parent))
-                return
+                if self.get_discord_role_by_name(event.guild, role.parent) is not None:
+                    event.msg.reply('You aren\'t in the parent role `{}` so I just added it for you. I also added you to `{}` like you asked.'.format(role.parent, role.role_name))
+                    event.member.add_role(self.get_discord_role_by_name(event.guild, role.parent))
+                    event.member.add_role(discord_role)
+                    return
+                else:
+                    event.msg.reply('The parent role {} doesn\'t exist so I couldn\'t automatically add it for you. Ask in <#417555071551668225> if you\'re having problems.'.format(role.parent))
+                    return
         if has_discord_role(event.member, discord_role):
             event.msg.reply('You already have this role!')
             return
@@ -129,7 +135,10 @@ class RolePlugin(Plugin):
 
     @Plugin.command('list', group='role')
     def command_role_list(self, event: CommandEvent):
-        role_description = '**Available Roles**\n\n'
+        role_descriptions = []
+        role_descriptions.append('**Available Roles**\n\n')
+        current_description = 0
+
         role_dict = dict()
         ordered_names = list()
         for role in self.roles:
@@ -141,8 +150,15 @@ class RolePlugin(Plugin):
                 ordered_names.append(role_name)
         for role_name in sorted(ordered_names):
             role = role_dict[role_name]
-            role_description += '* Role `{}` with aliases: `{}`\n'.format(
+            if len(role_descriptions[current_description]) + len(role_name) > 1800:
+                current_description += 1
+                role_descriptions.append("")
+
+            role_descriptions[current_description] += '* Role `{}` with aliases: `{}`\n'.format(
                 role_name, ', '.join(role.aliases)
             )
-        role_description += '\n\nTo give yourself a new role use `!role add <group alias>`'
-        event.msg.reply(role_description)
+
+        for message in role_descriptions:
+            event.msg.reply(message)
+
+        event.msg.reply('\n\nTo give yourself a new role use `!role add <group alias>`')
