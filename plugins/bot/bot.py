@@ -27,11 +27,19 @@ class Bot(Plugin):
         event.msg.reply('Beep Boop. The bot 🤖 is responsive.')
 
     @Plugin.command('invite')
-    def command_test(self, event: CommandEvent):
+    def command_invite(self, event: CommandEvent):
         event.msg.reply('Beep Boop. 🤖 here is your invite link: https://codenetwork.co/discord')
 
+    @Plugin.command('coc')
+    def command_invite(self, event: CommandEvent):
+        event.msg.reply('Beep Boop. 🤖 here is a link to our Code of Conduct: https://codenetwork.co/coc')
+
+    @Plugin.command('ssp')
+    def command_invite(self, event: CommandEvent):
+        event.msg.reply('Beep Boop. 🤖 here is a link to our Safe Space Policy: https://codenetwork.co/ssp')
+
     @Plugin.command('welcome')
-    def welcome(self, event: CommandEvent):
+    def command_welcome(self, event: CommandEvent):
         event.msg.reply('In case you missed it, here is some welcome info.', embed=self.get_welcome_embed())
 
     @Plugin.listen('GuildMemberAdd')
