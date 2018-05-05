@@ -85,53 +85,57 @@ class RolePlugin(Plugin):
 
     @Plugin.command('add', '<role_name:str>', group='role')
     def command_role_add(self, event: CommandEvent, role_name):
-        role = self.get_by_alias(role_name)
-        if role is None:
-            event.msg.reply('Unknown role!')
-            return
-        discord_role = self.get_discord_role_by_name(
-            event.guild, role.role_name
-        )
-        if discord_role is None:
-            event.msg.reply('Missing discord role!')
-            return
-        if role.parent is not None:
-            if not has_discord_role(event.member, self.get_discord_role_by_name(event.guild, role.parent)):
-                if self.get_discord_role_by_name(event.guild, role.parent) is not None:
-                    event.msg.reply('You aren\'t in the parent role `{}` so I just added it for you. I also added you to `{}` like you asked.'.format(role.parent, role.role_name))
-                    event.member.add_role(self.get_discord_role_by_name(event.guild, role.parent))
-                    event.member.add_role(discord_role)
-                    return
-                else:
-                    event.msg.reply('The parent role {} doesn\'t exist so I couldn\'t automatically add it for you. Ask in <#417555071551668225> if you\'re having problems.'.format(role.parent))
-                    return
-        if has_discord_role(event.member, discord_role):
-            event.msg.reply('You already have this role!')
-            return
-        event.member.add_role(discord_role)
-        event.msg.reply('You\'ve been given the {} role!'.format(role.role_name))
+        roles = role_name.split(",")
+        for role in roles:
+            role = self.get_by_alias(role)
+            if role is None:
+                event.msg.reply('Unknown role!')
+                continue
+            discord_role = self.get_discord_role_by_name(
+                event.guild, role.role_name
+            )
+            if discord_role is None:
+                event.msg.reply('Missing discord role!')
+                continue
+            if role.parent is not None:
+                if not has_discord_role(event.member, self.get_discord_role_by_name(event.guild, role.parent)):
+                    if self.get_discord_role_by_name(event.guild, role.parent) is not None:
+                        event.msg.reply('You aren\'t in the parent role `{}` so I just added it for you. I also added you to `{}` like you asked.'.format(role.parent, role.role_name))
+                        event.member.add_role(self.get_discord_role_by_name(event.guild, role.parent))
+                        event.member.add_role(discord_role)
+                        continue
+                    else:
+                        event.msg.reply('The parent role {} doesn\'t exist so I couldn\'t automatically add it for you. Ask in <#417555071551668225> if you\'re having problems.'.format(role.parent))
+                        continue
+            if has_discord_role(event.member, discord_role):
+                event.msg.reply('You already have this role!')
+                continue
+            event.member.add_role(discord_role)
+            event.msg.reply('You\'ve been given the {} role!'.format(role.role_name))
 
     @Plugin.command('remove', '<role_name:str>', group='role')
     def command_role_remove(self, event: CommandEvent, role_name):
-        role = self.get_by_alias(role_name)
-        if role is None:
-            event.msg.reply('Unknown role!')
-            return
-        discord_role = self.get_discord_role_by_name(
-            event.guild, role.role_name
-        )
-        if discord_role is None:
-            event.msg.reply('Missing role definition!')
-            return
-        if not has_discord_role(event.member, discord_role):
-            event.msg.reply('You don\'t have this role!')
-            return
-        for other_role in self.roles:
-            if other_role.parent == role.role_name:
-                event.member.remove_role(self.get_discord_role_by_name(event.guild, other_role.role_name))
-                event.msg.reply('You\'ve lost the {} role!'.format(other_role.role_name))
-        event.member.remove_role(discord_role)
-        event.msg.reply('You\'ve lost the {} role!'.format(role.role_name))
+        roles = role_name.split(",")
+        for role in roles:
+            role = self.get_by_alias(role)
+            if role is None:
+                event.msg.reply('Unknown role!')
+                continue
+            discord_role = self.get_discord_role_by_name(
+                event.guild, role.role_name
+            )
+            if discord_role is None:
+                event.msg.reply('Missing role definition!')
+                continue
+            if not has_discord_role(event.member, discord_role):
+                event.msg.reply('You don\'t have this role!')
+                continue
+            for other_role in self.roles:
+                if other_role.parent == role.role_name:
+                    event.member.remove_role(self.get_discord_role_by_name(event.guild, other_role.role_name))
+                    event.msg.reply('You\'ve lost the {} role!'.format(other_role.role_name))
+            event.member.remove_role(discord_role)
+            event.msg.reply('You\'ve lost the {} role!'.format(role.role_name))
 
     @Plugin.command('list', group='role')
     def command_role_list(self, event: CommandEvent):
