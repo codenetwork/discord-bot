@@ -87,7 +87,7 @@ class RolePlugin(Plugin):
     def command_role_add(self, event: CommandEvent, role_name):
         roles = role_name.split(",")
         for role in roles:
-            role = self.get_by_alias(role)
+            role = self.get_by_alias(role.strip())
             if role is None:
                 event.msg.reply('Unknown role!')
                 continue
