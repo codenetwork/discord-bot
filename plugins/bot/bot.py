@@ -26,6 +26,12 @@ class Bot(Plugin):
     def command_test(self, event: CommandEvent):
         event.msg.reply('Beep Boop. The bot 🤖 is responsive.')
 
+    @Plugin.command('help')
+    @Plugin.command('usage')
+    def command_test(self, event: CommandEvent):
+        event.msg.reply('Beep Boop hello from the bot! 🤖 To get started read everything in the <#413628419226468352> channel.')
+        event.msg.reply('**Bot Usage**: \n Here is a list of all the commands we currently support:\n`!help` - this message.\n`!bot` - checks if the bot is responsive.\n`!invite` get the invite link to this server.\n`!coc` - link to our Code of Conduct.\n`!ssp` - link to our Safe Space Policy.\n`!welcome` - prints the welcome info again. (you should get it in a PM)\n`!role list` - show a list of roles currently available.\n`!role add qut` or `!role add qut,python,hardware` add a role to yourself so you can see role specific channels.\n`!parking qut` shows current parking state at location you specify.')
+
     @Plugin.command('invite')
     def command_invite(self, event: CommandEvent):
         event.msg.reply('Beep Boop. 🤖 here is your invite link: https://codenetwork.co/discord')
