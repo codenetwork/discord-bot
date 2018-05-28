@@ -166,3 +166,8 @@ class RolePlugin(Plugin):
             event.msg.reply(message)
 
         event.msg.reply('\n\nTo give yourself a new role use `!role add qut` or add multiple like `!role add qut,hardware,python,javascript`. (note the lack of spaces between roles)')
+
+    @Plugin.command('role')
+    def command_role_help(self, event: CommandEvent):
+        event.msg.reply('Beep Boop hi from the bot 🤖. To see what roles are available type `!role list`, to add roles you can use `!role add qut` or `!role add qut,python,hackathons,java`')
+

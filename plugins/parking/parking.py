@@ -13,22 +13,24 @@ from .qut import get_parking_qut
 
 
 class Parking(Plugin):
-    @Plugin.command('parking')
-    def command_info(self, event: CommandEvent):
-        """Replies with the default help/usage message."""
-        message = '**Usage:**\n'
-        message += 'List parking info for a place: `!parking list <name>` Example: `!parking list qut`'
+    @Plugin.command('parking', '[place:str...]')
+    def command_info(self, event: CommandEvent, place = None):
+        """Main parking bot method."""
+        if place is None:
+            message = '**Usage:**\n'
+            message += 'List parking info for a place: `!parking <name>` Example: `!parking qut`'
+            event.msg.reply(message)
+        else:
+            # Check which location was entered and reply with the correct parking information
+            if place in ["qut", "QUT"]:
+                event.msg.reply("Here you go.", embed=get_parking_qut())
 
-        event.msg.reply(message)
+            else:  # Default catch all for locations that haven't been implemented
+                event.msg.reply('Sorry, {} hasn\'t been implemented yet. Look here if you want to have a go at '
+                                'doing it yourself: https://github.com/codenetwork/discord-bot#how-to-contribute'
+                                ''.format(place))
 
-    @Plugin.command('list', '<place:str>', group='parking')
+    @Plugin.command('parking', '<place:str>')
     def command_parking_list(self, event, place):
         """Replies with location specific parking information"""
-        # Check which location was entered and reply with the correct parking information
-        if place in ["qut", "QUT"]:
-            event.msg.reply("Here you go.", embed=get_parking_qut())
-
-        else:  # Default catch all for locations that haven't been implemented
-            event.msg.reply('Sorry, {} hasn\'t been implemented yet. Look here if you want to have a go at '
-                            'doing it yourself: https://github.com/codenetwork/discord-bot#how-to-contribute'
-                            ''.format(place))
+        
