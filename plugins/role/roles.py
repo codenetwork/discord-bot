@@ -165,4 +165,4 @@ class RolePlugin(Plugin):
         for message in role_descriptions:
             event.msg.reply(message)
 
-        event.msg.reply('\n\nTo give yourself a new role use `!role add <group alias>`')
+        event.msg.reply('\n\nTo give yourself a new role use `!role add qut` or add multiple like `!role add qut,hardware,python,javascript`. (note the lack of spaces between roles)')
