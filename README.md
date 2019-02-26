@@ -36,7 +36,7 @@ says "MY_BOT_TOKEN_HERE".
 
 ### Add your bot to your test guild
 
-Click the "OAuth2" button on the left to enter the invite url menu.
+Click the "OAuth2" button on the left to enter the invite url menu. Scroll down to the "scopes" section.
 Select the "bot" scope and "Administrator" from the bot permissions section. Copy the URL then open it in
 a new window. Select your test guild from the dropdown menu and hit "Authorize". The bot
 has now been added to your guild but is not currently running.
